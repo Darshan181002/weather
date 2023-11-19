@@ -1,44 +1,55 @@
-/* --------------- Weather Web App  --------------------- */
-let show = document.getElementById("show");
-let search = document.getElementById("search");
-let cityVal = document.getElementById("city");
+const apiKey = "72f19bea9bdddc25c7cb456a8dbc54ed"
+const apiUrl ="https://api.openweathermap.org/data/2.5/weather?units=metric&q="
 
-//Make sure you have your own key.
-let key = "2f745fa85d563da5adb87b6cd4b81caf";
+// to call the city from search //
 
-let getWeather = () => {
-  let cityValue = cityVal.value;
-  if (cityValue.length == 0) {
-    show.innerHTML = `<h3 class="error">Please enter a city name</h3>`;
-  }
-  else {
-    let url = `https://api.openweathermap.org/data/2.5/weather?q=${cityValue}&appid=${key}&units=metric`;
-    cityVal.value = "";
-    fetch(url)
-      .then((resp) => resp.json())
-      .then((data) => {
-        show.innerHTML = `
-        <h2>${data.name}, ${data.sys.country}</h2>
-        <h4 class="weather">${data.weather[0].main}</h4>
-        <h4 class="desc">${data.weather[0].description}</h4>
-        <img src="https://openweathermap.org/img/w/${data.weather[0].icon}.png">
-        <h1>${data.main.temp} &#176;</h1>
-        <div class="temp_container">
-         <div>
-            <h4 class="title">min</h4>
-            <h4 class="temp">${data.main.temp_min}&#176;</h4>
-         </div>
-         <div>
-            <h4 class="title">max</h4>
-            <h4 class="temp">${data.main.temp_max}&#176;</h4>
-         </div>   
-        </div>
-        `;
-      })
-      .catch(() => {
-        show.innerHTML = `<h3 class="error">City not found</h3>`;
-      });
-  }
-};
-search.addEventListener("click", getWeather);
-window.addEventListener("load", getWeather);
+const searchBox = document.querySelector(".my_search input");
+const searchBtn = document.querySelector(".my_search button");
+const weatherIcon = document.querySelector(".weather_icon")
+
+async function chechWeather(city){
+    const response = await fetch(apiUrl + city + `&appid=${apiKey}`);
+
+    if(response.status == 404){
+        document.querySelector(".error").style.display = "block";
+        document.querySelector(".weather").style.display = "none";
+
+    }
+    else{
+        var data = await response.json();
+
+    
+
+        document.querySelector(".city").innerHTML = data.name;
+        document.querySelector(".temp").innerHTML = Math.round(data.main.temp) + "°C";
+        document.querySelector(".humidity").innerHTML = data.main.humidity + "%";
+        document.querySelector(".wind").innerHTML = data.wind.speed + " km/hr"
+
+        if(data.weather[0].main == "Clouds"){
+            weatherIcon.src = "clouds.png"
+        }
+        else if(data.weather[0] == "Clear"){
+            weatherIcon.src = "clear.png";
+        }
+        else if(data.weather[0] == "Rain"){
+            weatherIcon.src = "rain.png";
+        }
+        else if(data.weather[0] == "Drizzle"){
+            weatherIcon.src = "drizzle.png";
+        }
+        else if(data.weather[0] == "Mist"){
+            weatherIcon.src = "mist.png";
+        }
+
+        document.querySelector(".weather").style.display = "block";
+        document.querySelector(".error").style.display = "none";
+    }
+ 
+}
+
+    // when we will click on search button it should send information on check weather fucnctions // 
+
+    searchBtn.addEventListener("click" , ()=>{
+        chechWeather(searchBox.value);
+
+    })
