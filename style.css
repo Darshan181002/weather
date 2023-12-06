@@ -7,8 +7,8 @@
 
 body{
     background-color:#222;
-    background-image: url('pexels-pixabay-209831.jpg');
-    background-size: 100%;
+    /* background-image: url('weather\ for\ responsive.jpg');
+    background-size: 100%; */
 }
 
 .card{
@@ -119,21 +119,24 @@ body{
 }
 
 /* Responsive styles */
+
 @media screen and (min-width: 768px) {
+
+
     .card {
         width: 70%;
         margin-top: 0%;
     }
+
 }
 
 /* CSS for search */
 
 body{
     background-color:#222;
-    background-image: url('weather\ for\ responsive.jpg');
-    background-size: 130%;
+    /* background-image: url('weather\ for\ responsive.jpg');
+    background-size: 50%; */
 }
-
 
 
 .my_search {
